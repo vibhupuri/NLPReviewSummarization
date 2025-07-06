@@ -1,27 +1,23 @@
-import pandas as pd
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.nlp.tokenizers import Tokenizer
-from sumy.summarizers.lsa import LsaSummarizer
 import streamlit as st
+import pandas as pd
 
-# Function to summarize text
-def get_summary(text, sentence_count=2):
-    try:
-        parser = PlaintextParser.from_string(text, Tokenizer("english"))
-        summarizer = LsaSummarizer()
-        summary = summarizer(parser.document, sentence_count)
-        return " ".join(str(sentence) for sentence in summary)
-    except Exception:
-        return text
+# Load processed reviews
+@st.cache_data
+def load_reviews():
+    return pd.read_csv("disney_reviews_processed.csv")  # or use read_pickle()
+
+df = load_reviews()
 
 st.title("📝 Disneyland Review Summarizer")
 
-review = st.text_area("Paste a Disneyland review:")
+# Dropdown to pick a review
+selected_index = st.selectbox("Select review to summarize:", df.index)
+review = df.loc[selected_index, "Review_Text"]
+summary = df.loc[selected_index, "Summary"]
 
-if st.button("Summarize"):
-    if review.strip():
-        summary = get_summary(review)
-        st.markdown("### ✂️ Extractive Summary")
-        st.success(summary)
-    else:
-        st.warning("Please enter some review text.")
+# Display
+st.markdown("### Original Review")
+st.write(review)
+
+st.markdown("### ✂️ Extractive Summary")
+st.success(summary)
