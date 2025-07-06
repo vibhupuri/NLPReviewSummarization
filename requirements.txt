@@ -2,3 +2,4 @@ streamlit
 sumy
 pandas
 nltk
+gdown
