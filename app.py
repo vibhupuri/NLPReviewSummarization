@@ -8,9 +8,9 @@ from sumy.summarizers.lsa import LsaSummarizer
 
 @st.cache_data
 def load_large_csv():
-    file_id = "14kn_5J-Obqqbd_vFzxmeTsTrjXkXwE3J"
+    file_id = "1ZbqPfwjaxdvUqkOymmyGh4LPNX8kd8qi"
     url = f"https://drive.google.com/uc?id={file_id}"
-    output = "disneyland_reviews_with_summary1.csv"
+    output = "disneyland.csv"
 
     if not os.path.exists(output):
         gdown.download(url, output, quiet=False)
